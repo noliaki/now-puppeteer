@@ -1,9 +1,6 @@
 <template>
   <div v-if="result">
     <h3 class="bg-grey p-2 rounded">{{ result.pageUrl }}</h3>
-    <div class="mt-2 text-center bg-grey-dark img-wrapper">
-      <img :src="screenShotUrl" :alt="result.pageUrl" class="max-w-full">
-    </div>
     <meta-result :metas="result.meta" :host-name="hostName"></meta-result>
     <response-result :responses="result.responseError" :host-name="hostName"></response-result>
   </div>

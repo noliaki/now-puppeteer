@@ -3,14 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const puppeteer_1 = __importDefault(require("puppeteer"));
 const puppeteer_core_1 = __importDefault(require("puppeteer-core"));
 const chrome_aws_lambda_1 = __importDefault(require("chrome-aws-lambda"));
 async function analyze(path, option = {}) {
     const result = {
         pageUrl: path
     };
-    const browser = await createBrowser();
+    const browser = await puppeteer_core_1.default.launch({
+        args: chrome_aws_lambda_1.default.args,
+        executablePath: await chrome_aws_lambda_1.default.executablePath,
+        headless: chrome_aws_lambda_1.default.headless
+    });
     const page = await browser.newPage();
     page.on('error', (error) => {
         console.log(error);
@@ -57,7 +60,11 @@ async function analyze(path, option = {}) {
 }
 exports.analyze = analyze;
 async function getScreenShot(url) {
-    const browser = await createBrowser();
+    const browser = await puppeteer_core_1.default.launch({
+        args: chrome_aws_lambda_1.default.args,
+        executablePath: await chrome_aws_lambda_1.default.executablePath,
+        headless: chrome_aws_lambda_1.default.headless
+    });
     const page = await browser.newPage();
     page.setViewport({
         width: 1200,
@@ -72,12 +79,3 @@ async function getScreenShot(url) {
     return file;
 }
 exports.getScreenShot = getScreenShot;
-async function createBrowser() {
-    return process.env.NODE_ENV === 'development'
-        ? await puppeteer_1.default.launch()
-        : await puppeteer_core_1.default.launch({
-            args: chrome_aws_lambda_1.default.args,
-            executablePath: await chrome_aws_lambda_1.default.executablePath,
-            headless: chrome_aws_lambda_1.default.headless
-        });
-}

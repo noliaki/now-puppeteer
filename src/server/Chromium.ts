@@ -1,12 +1,15 @@
-import puppeteer from 'puppeteer'
-import puppeteerCore from 'puppeteer-core'
+import puppeteer from 'puppeteer-core'
 import chrome from 'chrome-aws-lambda'
 
 export async function analyze(path: string, option = {}): Promise<void> {
   const result: any = {
     pageUrl: path
   }
-  const browser: puppeteer.Browser = await createBrowser()
+  const browser: puppeteer.Browser = await puppeteer.launch({
+    args: chrome.args,
+    executablePath: await chrome.executablePath,
+    headless: chrome.headless
+  })
   const page: puppeteer.Page = await browser.newPage()
   page.on('error', (error: any) => {
     console.log(error)
@@ -69,7 +72,11 @@ export async function analyze(path: string, option = {}): Promise<void> {
 }
 
 export async function getScreenShot(url: string): Promise<Buffer> {
-  const browser: puppeteer.Browser = await createBrowser()
+  const browser: puppeteer.Browser = await puppeteer.launch({
+    args: chrome.args,
+    executablePath: await chrome.executablePath,
+    headless: chrome.headless
+  })
 
   const page: puppeteer.Page = await browser.newPage()
   page.setViewport({
@@ -83,14 +90,4 @@ export async function getScreenShot(url: string): Promise<Buffer> {
   })
   await browser.close()
   return file
-}
-
-async function createBrowser(): Promise<puppeteer.Browser> {
-  return process.env.NODE_ENV === 'development'
-    ? await puppeteer.launch()
-    : await puppeteerCore.launch({
-        args: chrome.args,
-        executablePath: await chrome.executablePath,
-        headless: chrome.headless
-      })
 }

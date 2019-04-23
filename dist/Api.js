@@ -14,14 +14,8 @@ const router = express.Router();
 exports.default = router
     .post('/api/analyze', async (req, res, next) => {
     try {
-        const pattern = new RegExp('^(https?:\\/\\/)?' +
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
-            '((\\d{1,3}\\.){3}\\d{1,3}))' +
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
-            '(\\?[;&a-z\\d%_.~+=-]*)?' +
-            '(\\#[-a-z\\d_]*)?$', 'i');
         const urls = req.body.urls
-            .filter((urlString) => pattern.test(urlString))
+            .filter((urlString) => new url_1.URL(urlString).hostname.includes('.'))
             .filter((urlString, index, arr) => arr.indexOf(urlString) === index);
         const requests = [];
         for (let i = 0; i < urls.length; i++) {
@@ -37,7 +31,7 @@ exports.default = router
 })
     .get('/api/screenshot', async (req, res, next) => {
     const parsedUrl = new url_1.URL(req.query.url);
-    if (!(parsedUrl.protocol && parsedUrl.hostname)) {
+    if (!parsedUrl.hostname.includes('.')) {
         res.status(500);
         res.json({
             error: 'not url'
@@ -45,9 +39,9 @@ exports.default = router
         return;
     }
     try {
-        const file = await Chromium_1.getScreenShot(parsedUrl.href);
+        const file = await Chromium_1.getScreenShot(parsedUrl.toString());
         res.setHeader('Content-Type', 'image/jpeg');
-        res.send(file);
+        res.end(file);
     }
     catch (error) {
         res.status(500);

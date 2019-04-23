@@ -44,7 +44,6 @@
     "body-parser": "^1.18.3",
     "chrome-aws-lambda": "^1.14.0",
     "express": "^4.16.4",
-    "puppeteer": "^1.14.0",
     "puppeteer-core": "^1.14.0",
     "url-parse": "^1.4.6",
     "vue": "^2.6.10"

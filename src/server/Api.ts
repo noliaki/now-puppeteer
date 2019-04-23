@@ -13,18 +13,11 @@ export default router
       next: express.NextFunction
     ): Promise<void> => {
       try {
-        const pattern = new RegExp(
-          '^(https?:\\/\\/)?' +
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
-            '((\\d{1,3}\\.){3}\\d{1,3}))' +
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
-            '(\\?[;&a-z\\d%_.~+=-]*)?' +
-            '(\\#[-a-z\\d_]*)?$',
-          'i'
-        )
-
         const urls: string[] = req.body.urls
-          .filter((urlString: string): boolean => pattern.test(urlString))
+          .filter(
+            (urlString: string): boolean =>
+              new URL(urlString).hostname.includes('.')
+          )
           .filter(
             (urlString: string, index: number, arr: string[]): boolean =>
               arr.indexOf(urlString) === index
@@ -51,7 +44,7 @@ export default router
     ): Promise<void> => {
       const parsedUrl: URL = new URL(req.query.url)
 
-      if (!(parsedUrl.protocol && parsedUrl.hostname)) {
+      if (!parsedUrl.hostname.includes('.')) {
         res.status(500)
         res.json({
           error: 'not url'
@@ -60,9 +53,9 @@ export default router
       }
 
       try {
-        const file: Buffer = await getScreenShot(parsedUrl.href)
+        const file: Buffer = await getScreenShot(parsedUrl.toString())
         res.setHeader('Content-Type', 'image/jpeg')
-        res.send(file)
+        res.end(file)
       } catch (error) {
         res.status(500)
         res.json({ error })

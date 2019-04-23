@@ -72,10 +72,14 @@ export default {
       })
         .then(res => res.json())
         .then(json => {
-          this.results = json
-          this.isFetching = false
+          alert('DONE')
+          this.$nextTick(() => {
+            this.results = JSON.parse(JSON.stringify(json))
+            this.isFetching = false
+          })
         })
-        .catch(error => {
+        .catch(alert)
+        .then(() => {
           this.isFetching = false
         })
     }
