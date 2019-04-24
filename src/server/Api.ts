@@ -35,6 +35,7 @@ export default router
         const results = await Promise.all(requests)
         res.json(results)
       } catch (error) {
+        console.log(error)
         res.status(500)
         res.json({ error })
       }
@@ -50,6 +51,7 @@ export default router
       const parsedUrl: URL = new URL(req.query.url)
 
       if (!parsedUrl.hostname.includes('.')) {
+        console.log('not url')
         res.status(500)
         res.json({
           error: 'not url'
@@ -62,6 +64,7 @@ export default router
         res.setHeader('Content-Type', 'image/jpeg')
         res.end(file)
       } catch (error) {
+        console.log(error)
         res.status(500)
         res.json({ error })
       }

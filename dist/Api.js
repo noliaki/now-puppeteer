@@ -28,6 +28,7 @@ exports.default = router
         res.json(results);
     }
     catch (error) {
+        console.log(error);
         res.status(500);
         res.json({ error });
     }
@@ -35,6 +36,7 @@ exports.default = router
     .get('/api/screenshot', async (req, res, next) => {
     const parsedUrl = new url_1.URL(req.query.url);
     if (!parsedUrl.hostname.includes('.')) {
+        console.log('not url');
         res.status(500);
         res.json({
             error: 'not url'
@@ -47,6 +49,7 @@ exports.default = router
         res.end(file);
     }
     catch (error) {
+        console.log(error);
         res.status(500);
         res.json({ error });
     }

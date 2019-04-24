@@ -18,9 +18,9 @@
     <div class="pt-4">
       <disclosure :show="showData">
         <div
-          class="w-full text-left border"
+          class="w-full text-left"
           v-for="(item, index) in filterdData"
-          :class="{'mt-4': index !== 0}"
+          :class="{'mt-4': index !== 0, 'border-red-dark border-4 bg-red-lighter': item.status === 404, 'border': item.status !== 404}"
           :key="'meta-' + index"
         >
           <div
@@ -135,7 +135,7 @@ export default {
   transform: rotate(180deg);
 }
 
-.bg-red-lighter > * {
+.bg-red-lighter * {
   color: #3b0d0c !important;
 }
 </style>
