@@ -7,13 +7,49 @@
       placeholder="input URL"
       v-model="inputText"
     ></textarea>
+    <form class="w-full mt-2">
+      <div class="md:flex md:items-center mb-6">
+        <div class="w-48">
+          <label
+            class="block text-grey font-bold md:text-right mb-1 md:mb-0 pr-4"
+            for="inline-full-name"
+          >Basic auth User Name</label>
+        </div>
+        <div class="w-1/3">
+          <input
+            class="bg-grey-lighter appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-purple"
+            id="inline-full-name"
+            type="text"
+            placeholder="input Basic auth User Name"
+            v-model="basicAuthUserName"
+          >
+        </div>
+      </div>
+      <div class="md:flex md:items-center mb-6">
+        <div class="w-48">
+          <label
+            class="block text-grey font-bold md:text-right mb-1 md:mb-0 pr-4"
+            for="inline-username"
+          >Basic auth Password</label>
+        </div>
+        <div class="w-1/3">
+          <input
+            class="bg-grey-lighter appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-purple"
+            id="inline-username"
+            type="text"
+            placeholder="input Basic auth Password"
+            v-model="basicAuthPassword"
+          >
+        </div>
+      </div>
+    </form>
     <div class="text-center mt-4">
       <button
-        class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-10 rounded-full mx-auto tracking-wide shadow-md"
+        class="shadow bg-purple hover:bg-purple-light focus:shadow-outline focus:outline-none text-white py-2 px-20 rounded-full"
         :class="{'opacity-50 cursor-not-allowed': isFetching}"
         type="button"
         @click.prevent="onClick"
-      >解析</button>
+      >解 析</button>
     </div>
     <div v-show="isFetching" class="mt-4">
       <div class="loading mx-auto"></div>
@@ -40,6 +76,8 @@ export default {
     return {
       inputText: '',
       results: [],
+      basicAuthUserName: '',
+      basicAuthPassword: '',
       isFetching: false
     }
   },
@@ -61,22 +99,28 @@ export default {
       this.isFetching = true
       this.results = []
 
+      const body = {
+        urls: this.urls
+      }
+
+      if (this.basicAuthUserName || this.basicAuthPassword) {
+        body.basicAuth = {
+          userName: this.basicAuthUserName,
+          password: this.basicAuthPassword
+        }
+      }
+
       fetch('/api/analyze', {
         method: 'POST',
-        body: JSON.stringify({
-          urls: this.urls
-        }),
+        body: JSON.stringify(body),
         headers: {
           'Content-Type': 'application/json'
         }
       })
         .then(res => res.json())
         .then(json => {
-          alert('DONE')
-          this.$nextTick(() => {
-            this.results = JSON.parse(JSON.stringify(json))
-            this.isFetching = false
-          })
+          this.results = JSON.parse(JSON.stringify(json))
+          this.isFetching = false
         })
         .catch(alert)
         .then(() => {

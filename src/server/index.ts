@@ -1,10 +1,12 @@
 import path from 'path'
 import * as express from 'express'
 import bodyParser from 'body-parser'
+import helmet from 'helmet'
 import api from './Api'
 
 const app: express.Express = express.default()
 app
+  .use(helmet())
   .use(
     bodyParser.urlencoded({
       extended: true

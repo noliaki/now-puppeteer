@@ -40,10 +40,13 @@
   "dependencies": {
     "@types/body-parser": "^1.17.0",
     "@types/express": "^4.16.1",
+    "@types/helmet": "0.0.43",
     "@types/puppeteer-core": "^1.9.0",
     "body-parser": "^1.18.3",
     "chrome-aws-lambda": "^1.14.0",
     "express": "^4.16.4",
+    "helmet": "^3.16.0",
+    "puppeteer": "^1.14.0",
     "puppeteer-core": "^1.14.0",
     "url-parse": "^1.4.6",
     "vue": "^2.6.10"

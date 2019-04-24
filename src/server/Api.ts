@@ -12,6 +12,7 @@ export default router
       res: express.Response,
       next: express.NextFunction
     ): Promise<void> => {
+      console.log(req.body)
       try {
         const urls: string[] = req.body.urls
           .filter(
@@ -25,7 +26,11 @@ export default router
 
         const requests: Promise<any>[] = []
         for (let i: number = 0; i < urls.length; i++) {
-          requests.push(analyze(urls[i]))
+          requests.push(
+            analyze(urls[i], {
+              basicAuth: req.body.basicAuth
+            })
+          )
         }
         const results = await Promise.all(requests)
         res.json(results)

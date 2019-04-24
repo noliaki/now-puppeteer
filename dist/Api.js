@@ -13,13 +13,16 @@ const Chromium_1 = require("./Chromium");
 const router = express.Router();
 exports.default = router
     .post('/api/analyze', async (req, res, next) => {
+    console.log(req.body);
     try {
         const urls = req.body.urls
             .filter((urlString) => new url_1.URL(urlString).hostname.includes('.'))
             .filter((urlString, index, arr) => arr.indexOf(urlString) === index);
         const requests = [];
         for (let i = 0; i < urls.length; i++) {
-            requests.push(Chromium_1.analyze(urls[i]));
+            requests.push(Chromium_1.analyze(urls[i], {
+                basicAuth: req.body.basicAuth
+            }));
         }
         const results = await Promise.all(requests);
         res.json(results);

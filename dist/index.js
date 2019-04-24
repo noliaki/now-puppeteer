@@ -13,9 +13,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
 const express = __importStar(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const helmet_1 = __importDefault(require("helmet"));
 const Api_1 = __importDefault(require("./Api"));
 const app = express.default();
 app
+    .use(helmet_1.default())
     .use(body_parser_1.default.urlencoded({
     extended: true
 }))

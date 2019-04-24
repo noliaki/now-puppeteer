@@ -1,19 +1,26 @@
 <template>
   <div v-if="result">
     <h3 class="bg-grey p-2 rounded">{{ result.pageUrl }}</h3>
-    <meta-result :metas="result.meta" :host-name="hostName"></meta-result>
-    <response-result :responses="result.responseError" :host-name="hostName"></response-result>
+    <div class="mt-2 text-center bg-grey-dark img-wrapper">
+      <img :src="screenShotUrl" :alt="result.pageUrl" class="max-w-full">
+    </div>
+    <data-list :dataList="result.meta" :host-name="hostName">
+      <template v-slot:heading>meta</template>
+    </data-list>
+    <data-list :dataList="result.responseError" :host-name="hostName">
+      <template v-slot:heading>
+        Response
+        <span class="text-xs">(except for 2XX response)</span>
+      </template>
+    </data-list>
   </div>
 </template>
 <script>
-import metaResult from './Meta'
-import responseResult from './Responce'
-// import Url from 'url-parse'
+import dataList from './DataList'
 
 export default {
   components: {
-    metaResult,
-    responseResult
+    dataList
   },
   props: {
     result: {

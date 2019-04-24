@@ -30,15 +30,11 @@ export default {
     beforeLeave(el) {
       console.log('beforeLeave')
       el.style.height = `${el.scrollHeight}px`
-      console.log(el.style.height)
     },
     leave(el) {
       console.log('leave')
       el.style.height = '0'
     }
-  },
-  mounted() {
-    this.$refs.content.style.height = `${this.$refs.content.scrollHeight}px`
   }
 }
 </script>
