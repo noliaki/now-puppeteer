@@ -10,6 +10,7 @@ export default ({
   index: number
 }): JSX.Element => {
   const rootClassName: string[] = ['flex']
+  const breakAllStyle: React.CSSProperties = { wordBreak: 'break-all' }
 
   if (index !== 0) {
     rootClassName.push('border-t')
@@ -19,26 +20,30 @@ export default ({
     objKey !== 'headers' ? (
       <div
         className="p-2 font-mono text-xs text-blue-dark flex-grow"
-        style={{ wordBreak: 'break-all' }}
+        style={breakAllStyle}
       >
         {val}
       </div>
     ) : (
-      <div>
+      <div className="flex-grow">
         {Object.keys(val).map(
-          (hKey, hVal, hIndex): JSX.Element => (
-            <div className="flex bg-red-lighter" key={'header-' + hIndex}>
-              <div className="p-2 font-mono text-xs text-purple-dark w-32 flex-no-shrink">
-                {hKey}
+          (hKey, hIndex): JSX.Element => {
+            const containerClassName: string =
+              hIndex !== 0 ? 'flex border-t' : 'flex'
+            return (
+              <div className={containerClassName} key={'header-' + hIndex}>
+                <div className="p-2 font-mono text-xs text-purple-dark w-32 flex-no-shrink">
+                  {hKey}
+                </div>
+                <div
+                  className="p-2 font-mono text-xs text-blue-dark flex-grow"
+                  style={breakAllStyle}
+                >
+                  {val[hKey]}
+                </div>
               </div>
-              <div
-                className="p-2 font-mono text-xs text-blue-dark flex-grow"
-                style={{ wordBreak: 'break-all' }}
-              >
-                {hVal}
-              </div>
-            </div>
-          )
+            )
+          }
         )}
       </div>
     )

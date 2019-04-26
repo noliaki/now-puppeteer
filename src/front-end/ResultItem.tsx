@@ -19,7 +19,15 @@ export default ({ result }: { result: any }): JSX.Element => {
           className="max-w-full"
         />
       </div>
-      <ResultData heading="meta" dataList={result.meta} />
+      <ResultData dataList={result.meta}>
+        <>meta</>
+      </ResultData>
+      <ResultData dataList={result.responseError}>
+        <>
+          Response
+          <span className="text-xs">(except for 2XX response)</span>
+        </>
+      </ResultData>
     </div>
   )
 }

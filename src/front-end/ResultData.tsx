@@ -3,16 +3,20 @@ import Disclosure from './Disclosure'
 import DataItem from './DataItem'
 
 export default ({
-  heading,
+  children,
   dataList
 }: {
-  heading: string
-  dataList: any[]
-}): JSX.Element => {
+  children: JSX.Element | JSX.Element[]
+  dataList: any[] | undefined
+}): JSX.Element | null => {
+  if (!dataList) {
+    return null
+  }
+
   const [showData, setShowData] = useState(true)
   const [filterText, setFilterText] = useState('')
 
-  useEffect(() => {}, [showData, filterText, heading, dataList])
+  useEffect(() => {}, [showData, filterText, children, dataList])
 
   const pattern: RegExp = new RegExp(filterText, 'i')
   const filteredData: any[] = filterText
@@ -25,7 +29,7 @@ export default ({
     )
   )
 
-  const klass: string = showData ? 'flex' : 'flex -active'
+  const klass: string = showData ? 'flex -active' : 'flex'
 
   return (
     <div className="mt-6">
@@ -42,7 +46,7 @@ export default ({
             <span className="icon-line" />
             <span className="icon-line" />
           </span>
-          <span className="ml-1">{heading}</span>
+          <span className="ml-1">{children}</span>
         </button>
         <input
           type="text"
