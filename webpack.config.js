@@ -1,9 +1,9 @@
 const path = require('path')
 const webpack = require('webpack')
 const TerserPlugin = require('terser-webpack-plugin')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+// const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const plugins = [
-  new VueLoaderPlugin(),
+  // new VueLoaderPlugin(),
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
   })
@@ -12,29 +12,23 @@ const plugins = [
 const config = {
   mode: process.env.NODE_ENV,
   // context: path.resolve('./src/front-end/app.js'),
-  entry: path.resolve('./src/front-end/app.js'),
+  entry: path.resolve('./src/front-end/app.tsx'),
   output: {
     path: path.resolve('./dist/public/js'),
     filename: 'app.js'
   },
   resolve: {
-    extensions: ['.js', '.ts', '.vue', '.json']
+    extensions: ['.ts', '.tsx', '.js', 'jsx']
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         loader: 'ts-loader',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        exclude: /node_modules/,
+        options: {
+          configFile: 'tsconfig.client.json'
+        }
       }
     ]
   },
