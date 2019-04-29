@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import DataContent from './DataContent'
 
 function createContent(obj: any): JSX.Element[] {
@@ -22,6 +22,8 @@ function createContent(obj: any): JSX.Element[] {
 export default ({ item, index }: { item: any; index: number }): JSX.Element => {
   const notFoundError: boolean = item.status === 404
   const baseClasses: string[] = ['w-full', 'text-left']
+
+  useEffect(() => {}, [item, index])
 
   if (index !== 0) {
     baseClasses.push('mt-4')

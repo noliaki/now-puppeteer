@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export default ({
   objKey,
@@ -11,6 +11,8 @@ export default ({
 }): JSX.Element => {
   const rootClassName: string[] = ['flex']
   const breakAllStyle: React.CSSProperties = { wordBreak: 'break-all' }
+
+  useEffect(() => {}, [objKey, val, index])
 
   if (index !== 0) {
     rootClassName.push('border-t')

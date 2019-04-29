@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ResultData from './ResultData'
 
 export default ({ result }: { result: any }): JSX.Element => {
+  useEffect(() => {}, [result])
+
   return (
     <div>
       <h3
