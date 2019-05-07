@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const puppeteer_1 = __importDefault(require("puppeteer"));
+const puppeteer_core_1 = __importDefault(require("puppeteer-core"));
 const chrome_aws_lambda_1 = __importDefault(require("chrome-aws-lambda"));
 async function analyze(path, option = {}) {
     console.log(option);
@@ -57,6 +57,7 @@ async function analyze(path, option = {}) {
         }
         return r;
     });
+    result.title = await page.$eval('title', title => title.textContent);
     await browser.close();
     return result;
 }
@@ -78,11 +79,9 @@ async function getScreenShot(url) {
 }
 exports.getScreenShot = getScreenShot;
 async function createBrowser() {
-    return process.env.NODE_ENV === 'development'
-        ? await puppeteer_1.default.launch()
-        : await puppeteer_1.default.launch({
-            args: chrome_aws_lambda_1.default.args,
-            executablePath: await chrome_aws_lambda_1.default.executablePath,
-            headless: chrome_aws_lambda_1.default.headless
-        });
+    return await puppeteer_core_1.default.launch({
+        args: chrome_aws_lambda_1.default.args,
+        executablePath: await chrome_aws_lambda_1.default.executablePath,
+        headless: chrome_aws_lambda_1.default.headless
+    });
 }

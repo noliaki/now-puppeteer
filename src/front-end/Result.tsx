@@ -12,7 +12,7 @@ export default ({ results }: { results: any[] }): JSX.Element | null => {
       <h1 className="text-center mb-20 border-b">Result</h1>
       {results.map(
         (result: any, index: number): JSX.Element => (
-          <ResultItem result={result} key={index} />
+          <ResultItem result={result} index={index} key={index} />
         )
       )}
     </div>

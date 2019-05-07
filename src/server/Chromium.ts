@@ -1,4 +1,3 @@
-import puppeteer from 'puppeteer'
 import puppeteerCore from 'puppeteer-core'
 import chrome from 'chrome-aws-lambda'
 
@@ -7,8 +6,8 @@ export async function analyze(path: string, option: any = {}): Promise<void> {
   const result: any = {
     pageUrl: path
   }
-  const browser: puppeteer.Browser = await createBrowser()
-  const page: puppeteer.Page = await browser.newPage()
+  const browser: puppeteerCore.Browser = await createBrowser()
+  const page: puppeteerCore.Page = await browser.newPage()
 
   if (option.basicAuth) {
     await page.setExtraHTTPHeaders({
@@ -74,14 +73,16 @@ export async function analyze(path: string, option: any = {}): Promise<void> {
     return r
   })
 
+  result.title = await page.$eval('title', title => title.textContent)
+
   await browser.close()
   return result
 }
 
 export async function getScreenShot(url: string): Promise<Buffer> {
-  const browser: puppeteer.Browser = await createBrowser()
+  const browser: puppeteerCore.Browser = await createBrowser()
 
-  const page: puppeteer.Page = await browser.newPage()
+  const page: puppeteerCore.Page = await browser.newPage()
   page.setViewport({
     width: 1200,
     height: 800
@@ -95,12 +96,10 @@ export async function getScreenShot(url: string): Promise<Buffer> {
   return file
 }
 
-async function createBrowser(): Promise<puppeteer.Browser> {
-  return process.env.NODE_ENV === 'development'
-    ? await puppeteer.launch()
-    : await puppeteer.launch({
-        args: chrome.args,
-        executablePath: await chrome.executablePath,
-        headless: chrome.headless
-      })
+async function createBrowser(): Promise<puppeteerCore.Browser> {
+  return await puppeteerCore.launch({
+    args: chrome.args,
+    executablePath: await chrome.executablePath,
+    headless: chrome.headless
+  })
 }

@@ -10,7 +10,7 @@ export default ({
   index: number
 }): JSX.Element => {
   const rootClassName: string[] = ['flex']
-  const breakAllStyle: React.CSSProperties = { wordBreak: 'break-all' }
+  const breakAllStyle: React.CSSProperties = { wordBreak: 'keep-all' }
 
   useEffect(() => {}, [objKey, val, index])
 
@@ -20,7 +20,10 @@ export default ({
 
   return (
     <div className={rootClassName.join(' ')}>
-      <div className="p-2 font-mono text-xs text-purple-dark whitespace-no-wrap w-32 flex-no-shrink">
+      <div
+        className="p-2 font-mono text-xs text-purple-dark w-32 flex-no-shrink"
+        style={breakAllStyle}
+      >
         {objKey}
       </div>
       <div
