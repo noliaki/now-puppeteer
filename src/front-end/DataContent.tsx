@@ -15,7 +15,7 @@ export default ({
   useEffect(() => {}, [objKey, val, index])
 
   if (index !== 0) {
-    rootClassName.push('border-t')
+    rootClassName.push('border-t border-dashed')
   }
 
   return (
